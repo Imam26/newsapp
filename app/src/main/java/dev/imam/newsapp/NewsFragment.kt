@@ -7,85 +7,93 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
-class NewsFragment:Fragment(R.layout.fragment_news) {
-    private var newsViewList:List<TextView> = listOf()
+private const val NEWS_ARRAY_KEY = "news"
+
+class NewsFragment: Fragment(R.layout.fragment_news), ILeftMenu {
+    private var newsViewList: List<TextView> = listOf()
+    private var data: Array<News> = arrayOf()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initNewsViewList(view)
+        data = arguments?.getSerializable(NEWS_ARRAY_KEY) as Array<News>
 
-        for((index, item) in Data.news.withIndex()){
-            val textView = newsViewList[index]
-            textView.setOnClickListener {
-                var transaction = parentFragmentManager.beginTransaction()
-                    .replace(R.id.detailContainer, DetailFragment.newInstance(item), "DetailFragment{$item.id}")
+        initNewsTextViewList(view)
 
+        for((index, item) in data.withIndex()){
+            newsViewList[index].setOnClickListener {
                 val fragment: Fragment? = parentFragmentManager.findFragmentById(R.id.detailContainer)
-                if(fragment is DetailFragment && fragment.newsId != item.id) {
-                    transaction.addToBackStack(null)
+                if(fragment is IContent<*> && fragment.data == item) {
+                    return@setOnClickListener
                 }
-
-                transaction.commit()
-                changeTextStyleAfterItemClicked(it as TextView, view)
+                replaceDetailFragment(item)
+                changeItemStyleAfterClicked(index)
             }
         }
 
         view.findViewById<Button>(R.id.next).setOnClickListener {
-            val fragment: Fragment? = parentFragmentManager.findFragmentById(R.id.detailContainer)
-            if(fragment is DetailFragment) {
-                val index = Data.news.indexOf(Data.news.find { it -> it.id == fragment.newsId })
-                if(index < Data.news.size - 1){
-                    var transaction = parentFragmentManager.beginTransaction()
-                        .replace(
-                            R.id.detailContainer,
-                            DetailFragment.newInstance(Data.news[index+1]),
-                            "DetailFragment{${Data.news[index+1].id}"
-                        )
-                    transaction.addToBackStack(null)
-                    transaction.commit()
-                    changeTextStyleAfterItemClicked(newsViewList[index+1], view)
-                }
-            }
+            onClickNavButtons(1){ index -> index != -1 && index < data.size - 1}
         }
 
         view.findViewById<Button>(R.id.prev).setOnClickListener {
-            val fragment: Fragment? = parentFragmentManager.findFragmentById(R.id.detailContainer)
-            if(fragment is DetailFragment) {
-                val index = Data.news.indexOf(Data.news.find { it -> it.id == fragment.newsId })
-                if(index > 0){
-                    var transaction = parentFragmentManager.beginTransaction()
-                        .replace(
-                            R.id.detailContainer,
-                            DetailFragment.newInstance(Data.news[index-1]),
-                            "DetailFragment{${Data.news[index-1].id}"
-                        )
-                    transaction.addToBackStack(null)
-                    transaction.commit()
-                    changeTextStyleAfterItemClicked(newsViewList[index-1], view)
-                }
+            onClickNavButtons(-1){index -> index > 0}
+        }
+    }
+
+    override fun changeItemStyleAfterClicked(itemIndex: Int)   {
+        if(itemIndex < 0 || itemIndex >= newsViewList.size) return
+        val clickedItem = newsViewList[itemIndex]
+        clickedItem.setTypeface(null, Typeface.BOLD)
+        for((index, item) in newsViewList.withIndex()){
+            if(index != itemIndex ){
+                item.setTypeface(null, Typeface.NORMAL);
             }
         }
     }
 
-    private fun initNewsViewList(view:View){
-        for (item in Data.news){
-            val textView = view.findViewById<TextView>(getViewId(item.id))
+    override fun changeItemStyleAfterContentIsEmpty(){
+        for(item in newsViewList){
+            item.setTypeface(null, Typeface.NORMAL);
+        }
+    }
+
+    private fun onClickNavButtons(step:Int, predicate: (Int) -> Boolean){
+        val fragment: Fragment? = parentFragmentManager.findFragmentById(R.id.detailContainer)
+        if(fragment is IContent<*>) {
+            val index = data.indexOf(fragment.data)
+            if(predicate(index)){
+                replaceDetailFragment(data[index+step])
+                changeItemStyleAfterClicked(index+step)
+            }
+        }
+    }
+
+    private fun replaceDetailFragment(news: News) {
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.detailContainer, DetailFragment.newInstance(news), "DetailFragment{${news.id}")
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun initNewsTextViewList(view: View) {
+        val itemsId = arrayOf(R.id.first, R.id.second, R.id.third, R.id.forth, R.id.fifth, R.id.sixth)
+
+        for ((index, item) in data.withIndex()){
+            val textView = view.findViewById<TextView>(itemsId[index])
             textView.text = item.header
             newsViewList += textView
 
         }
     }
 
-    private fun getViewId(strId: String) : Int{
+    private fun getViewId(strId: String) : Int {
         return resources.getIdentifier(strId, "id", context?.packageName)
     }
 
-    private fun changeTextStyleAfterItemClicked(clickedItem:TextView, view:View){
-        clickedItem.setTypeface(null, Typeface.BOLD);
-        for(item in newsViewList){
-            if(item.id != clickedItem.id ){
-                item.setTypeface(null, Typeface.NORMAL);
+    companion object {
+        fun newInstance(newsArray: Array<News>) = NewsFragment().apply {
+            arguments = Bundle().apply {
+                putSerializable(NEWS_ARRAY_KEY, newsArray)
             }
         }
     }

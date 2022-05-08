@@ -4,4 +4,6 @@
     <dimen name="header_text_size">16sp</dimen>
     <dimen name="header_author_size">14sp</dimen>
     <dimen name="header_detail_size">14sp</dimen>
+    <dimen name="detail_text_margin_left">20sp</dimen>
+    <dimen name="detail_text_margin_top">20sp</dimen>
 </resources>
