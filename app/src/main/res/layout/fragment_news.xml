@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/holo_green_dark"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/next"/>
+
+    <Button
+        android:id="@+id/prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/prev"/>
+
+    <TextView
+        style="@style/textView_news"
+        android:background="@drawable/bg_textview_news"
+        android:id="@+id/first"
+        tools:text="adasdaasfasfasfasfasssssssssssssssssssssssssdsds" />
+
+    <TextView
+        style="@style/textView_news"
+        android:background="@drawable/bg_textview_news"
+        android:id="@+id/second"
+        tools:text="adasdaasfasfasfasfa"/>
+
+    <TextView
+        style="@style/textView_news"
+        android:background="@drawable/bg_textview_news"
+        android:id="@+id/third"
+        tools:text="adasdaasfasfasfasfa"/>
+
+    <TextView
+        style="@style/textView_news"
+        android:background="@drawable/bg_textview_news"
+        android:id="@+id/forth"
+        tools:text="adasdaasfasfasfasfa"/>
+
+    <TextView
+        style="@style/textView_news"
+        android:background="@drawable/bg_textview_news"
+        android:id="@+id/fifth"
+        tools:text="adasdaasfasfasfasfa"/>
+
+    <TextView
+        style="@style/textView_news"
+        android:background="@drawable/bg_textview_news"
+        android:id="@+id/sixth"
+        tools:text="adasdaasfasfasfasfa"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

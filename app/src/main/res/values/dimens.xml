@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="news_container_width">140dp</dimen>
+    <dimen name="header_text_size">16sp</dimen>
+    <dimen name="header_author_size">14sp</dimen>
+    <dimen name="header_detail_size">14sp</dimen>
+</resources>
