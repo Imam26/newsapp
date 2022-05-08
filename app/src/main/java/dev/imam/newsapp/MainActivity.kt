@@ -2,7 +2,6 @@ package dev.imam.newsapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import androidx.fragment.app.Fragment
 
 class MainActivity : AppCompatActivity() {

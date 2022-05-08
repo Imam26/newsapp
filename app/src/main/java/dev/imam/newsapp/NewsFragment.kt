@@ -18,7 +18,7 @@ class NewsFragment: Fragment(R.layout.fragment_news), ILeftMenu {
 
         data = arguments?.getSerializable(NEWS_ARRAY_KEY) as Array<News>
 
-        initNewsTextViewList(view)
+        initTextViewList(view)
 
         for((index, item) in data.withIndex()){
             newsViewList[index].setOnClickListener {
@@ -75,19 +75,14 @@ class NewsFragment: Fragment(R.layout.fragment_news), ILeftMenu {
             .commit()
     }
 
-    private fun initNewsTextViewList(view: View) {
+    private fun initTextViewList(view: View) {
         val itemsId = arrayOf(R.id.first, R.id.second, R.id.third, R.id.forth, R.id.fifth, R.id.sixth)
-
         for ((index, item) in data.withIndex()){
             val textView = view.findViewById<TextView>(itemsId[index])
             textView.text = item.header
             newsViewList += textView
 
         }
-    }
-
-    private fun getViewId(strId: String) : Int {
-        return resources.getIdentifier(strId, "id", context?.packageName)
     }
 
     companion object {
