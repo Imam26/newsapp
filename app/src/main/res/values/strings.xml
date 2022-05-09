@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">NewsApp</string>
-    <string name="next">Вперед</string>
-    <string name="prev">Назад</string>
+    <string name="next">&gt;</string>
+    <string name="prev">&lt;</string>
 </resources>
